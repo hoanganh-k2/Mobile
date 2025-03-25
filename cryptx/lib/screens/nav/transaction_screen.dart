@@ -12,31 +12,6 @@ class HistoryScreenState extends State<HistoryScreen> {
   late EthereumProvider ethereumProvider;
   final List<Map<String, dynamic>> transactions = [];
 
-  Future<void> loadTransactions() async {
-    if (mounted) {
-      await ethereumProvider.loadTransactions();
-
-      for (var transaction in ethereumProvider.transactions) {
-        transactions.add({
-          "type": transaction.to!.getAddress ==
-                  ethereumProvider.walletModel!.getAddress
-              ? "Nhận"
-              : "Gửi",
-          "amount": transaction.amount,
-          "address": AddressFormat.formatAddress(transaction.to!.getAddress),
-          "date": transaction.date,
-          "status": "Thành công",
-        });
-      }
-
-      transactions.sort((a, b) => b["date"].compareTo(a["date"]));
-
-      if (mounted) {
-        setState(() {});
-      }
-    }
-  }
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -64,11 +39,6 @@ class HistoryScreenState extends State<HistoryScreen> {
         }
       }
     });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   @override
