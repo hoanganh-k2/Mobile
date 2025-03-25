@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wallet/utils/localization.dart';
 
 class CollectionScreen extends StatelessWidget {
   final List<Map<String, String>> nfts = [
@@ -24,7 +25,7 @@ class CollectionScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text("Bộ sưu tập NFT"),
+        title: Text(AppLocalizations.of(context)!.translate("NFT Collection")),
         centerTitle: true,
         backgroundColor: Colors.orange,
       ),

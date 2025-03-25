@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:wallet/providers/ethereum_provider.dart';
 import 'package:wallet/screens/nav/_nav.dart';
+import 'package:wallet/utils/localization.dart';
 import 'package:wallet/widgets/token_card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -84,6 +85,7 @@ class HomeScreenState extends State<HomeScreen> {
                     children: [
                       GestureDetector(
                         onTap: () {
+                          FocusScope.of(context).unfocus();
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -106,7 +108,7 @@ class HomeScreenState extends State<HomeScreen> {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        'Nhận',
+                        AppLocalizations.of(context)!.translate("receive"),
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
@@ -142,7 +144,7 @@ class HomeScreenState extends State<HomeScreen> {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        'Gửi',
+                        AppLocalizations.of(context)!.translate("send"),
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
@@ -178,7 +180,7 @@ class HomeScreenState extends State<HomeScreen> {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        'Đổi',
+                        AppLocalizations.of(context)!.translate("exchange"),
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
@@ -214,7 +216,7 @@ class HomeScreenState extends State<HomeScreen> {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        'Mua',
+                        AppLocalizations.of(context)!.translate("buy"),
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
@@ -230,20 +232,27 @@ class HomeScreenState extends State<HomeScreen> {
         ),
         SizedBox(height: 12),
         Expanded(
-          child: Container(
-            color: Colors.white,
-            child: ListView(
-              padding: EdgeInsets.all(16.0),
-              children: [
-                TokenCard(
-                    tokenName: 'Ethereum',
-                    balance: "${ethereumProvider.walletModel?.getEtherAmount}",
-                    price:
-                        "${ethereumProvider.walletModel?.getBalance.toStringAsFixed(2)}"),
-                // TokenCard(tokenName: 'Solana', balance: '5.4', price: '23.00'),
-                // TokenCard(tokenName: 'USDT', balance: '127.5', price: '1.00'),
-              ],
-            ),
+          child: ListView(
+            padding: EdgeInsets.all(16.0),
+            children: [
+              ListTile(
+                leading: Image.network(
+                  "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+                  width: 40,
+                  height: 40,
+                  errorBuilder: (context, error, stackTrace) =>
+                      Icon(Icons.error, color: Colors.red),
+                ),
+                title: Text("Ethereum",
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                subtitle: Text(
+                    "Balance: ${ethereumProvider.walletModel?.getEtherAmount ?? "0.0"} ETH"),
+                trailing: Text(
+                  "\$${ethereumProvider.walletModel?.getBalance.toStringAsFixed(2) ?? "0.00"}",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
           ),
         ),
       ],

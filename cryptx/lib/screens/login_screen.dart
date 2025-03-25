@@ -45,6 +45,7 @@ class LoginScreenState extends State<LoginScreen> {
               TextField(
                 controller: _passwordController,
                 obscureText: true,
+                focusNode: _passwordFocusNode,
                 decoration: InputDecoration(
                   labelText: "Nhập mật khẩu",
                   border: OutlineInputBorder(),

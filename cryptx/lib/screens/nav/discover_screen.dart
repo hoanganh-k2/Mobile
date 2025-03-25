@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:wallet/utils/localization.dart';
 
 class LastScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Khám phá"),
+        title: Text(AppLocalizations.of(context).translate("discover")),
         centerTitle: true,
         backgroundColor: Colors.orange,
         automaticallyImplyLeading: false,
@@ -29,36 +30,58 @@ class LastScreen extends StatelessWidget {
               ),
               child: TextField(
                 decoration: InputDecoration(
-                  hintText: "Tìm kiếm...",
+                  hintText: AppLocalizations.of(context).translate("search"),
                   border: InputBorder.none,
                   prefixIcon: Icon(Icons.search, color: Colors.grey),
                 ),
               ),
             ),
-            SizedBox(height: 16), 
-
+            SizedBox(height: 16),
             Expanded(
               child: Row(
                 children: [
                   Expanded(
-                    child: _buildBox("Sites", Icons.web, Colors.red, height: double.infinity),
+                    child: _buildBox(
+                        AppLocalizations.of(context).translate("sites"),
+                        Icons.web,
+                        Colors.red,
+                        height: double.infinity),
                   ),
                   SizedBox(width: 16),
                   Expanded(
                     flex: 2,
                     child: Column(
                       children: [
-                        Expanded(child: _buildBox("Tokens", Icons.monetization_on, Colors.green)),
+                        Expanded(
+                            child: _buildBox(
+                                AppLocalizations.of(context)
+                                    .translate("tokens"),
+                                Icons.monetization_on,
+                                Colors.green)),
                         SizedBox(height: 16),
                         Row(
                           children: [
-                            Expanded(child: _buildBox("Collections", Icons.category, Colors.orange)),
+                            Expanded(
+                                child: _buildBox(
+                                    AppLocalizations.of(context)
+                                        .translate("collections"),
+                                    Icons.category,
+                                    Colors.orange)),
                             SizedBox(width: 16),
-                            Expanded(child: _buildBox("Learn", Icons.school, Colors.blue)),
+                            Expanded(
+                                child: _buildBox(
+                                    AppLocalizations.of(context)
+                                        .translate("learn"),
+                                    Icons.school,
+                                    Colors.blue)),
                           ],
                         ),
                         SizedBox(height: 16),
-                        Expanded(child: _buildBox("Quest", Icons.explore, Colors.purple)),
+                        Expanded(
+                            child: _buildBox(
+                                AppLocalizations.of(context).translate("quest"),
+                                Icons.explore,
+                                Colors.purple)),
                       ],
                     ),
                   ),
@@ -84,7 +107,8 @@ class LastScreen extends StatelessWidget {
           children: [
             Icon(icon, size: 40, color: color),
             SizedBox(height: 8),
-            Text(title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            Text(title,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           ],
         ),
       ),

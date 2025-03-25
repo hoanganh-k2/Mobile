@@ -11,6 +11,7 @@ import 'package:wallet/models/transaction_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class EthereumProvider extends ChangeNotifier {
+  int currentWalletIndex = 0; // Chỉ số ví hiện tại
   final EthereumService _ethereumService;
   final CoinGeckoService _coinGeckoService = CoinGeckoService();
   final TransactionService _transactionService = TransactionService();
@@ -40,7 +41,9 @@ class EthereumProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   double get gasFee => _gasFee;
   double? get priceChange => _priceChange;
-  double? get balanceChange => _priceChange != null ? _walletModel.getBalance * _priceChange! / 100.0 : 0.0;
+  double? get balanceChange => _priceChange != null
+      ? _walletModel.getBalance * _priceChange! / 100.0
+      : 0.0;
   List<TransactionModel> get transactions => _transactions;
   List<WalletModel> get wallets => _wallets;
 
@@ -51,6 +54,7 @@ class EthereumProvider extends ChangeNotifier {
   }
 
   Future<void> switchWallet(int index) async {
+    currentWalletIndex = index; // Cập nhật ví hiện tại
     _walletModel = _wallets[index];
     await fetchBalance();
     await loadTransactions();
@@ -58,6 +62,7 @@ class EthereumProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
 
   void fetchGasFee(String receiver, double ethAmount) async {
     try {
@@ -153,5 +158,4 @@ class EthereumProvider extends ChangeNotifier {
       await fetchBalance();
     });
   }
-
 }

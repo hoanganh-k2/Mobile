@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wallet/main.dart';
 import 'package:wallet/providers/ethereum_provider.dart';
 import 'package:wallet/utils/format.dart';
 import 'package:wallet/screens/nav/_nav.dart';
+import 'package:wallet/utils/localization.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -24,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    ethereumProvider = Provider.of<EthereumProvider>(context, listen: false);
+    ethereumProvider = Provider.of<EthereumProvider>(context);
   }
 
   @override
@@ -38,17 +40,34 @@ class _HomePageState extends State<HomePage> {
     var address = ethereumProvider.walletModel!.getAddress;
     List<ListTile> wallets = [];
     for (var i = 0; i < ethereumProvider.wallets.length; i++) {
+      bool isSelected =
+          ethereumProvider.currentWalletIndex == i; // Kiểm tra ví hiện tại
       wallets.add(
         ListTile(
           leading: CircleAvatar(
-            backgroundColor: Colors.orange[100],
-            child: Icon(Icons.account_balance_wallet, color: Colors.orange),
+            backgroundColor: isSelected
+                ? Colors.orange
+                : Colors.orange[100], // Tô màu nếu được chọn
+            child: Icon(Icons.account_balance_wallet,
+                color: isSelected ? Colors.white : Colors.orange),
           ),
-          title: Text('Ví ${i + 1}'),
-          subtitle: Text(AddressFormat.formatAddress(ethereumProvider.wallets[i].address ?? '0x123...789')),
+          title: Text(
+            'Ví ${i + 1}',
+            style: TextStyle(
+              fontWeight: isSelected
+                  ? FontWeight.bold
+                  : FontWeight.normal, // In đậm nếu được chọn
+            ),
+          ),
+          subtitle: Text(AddressFormat.formatAddress(
+              ethereumProvider.wallets[i].address ?? '0x123...789')),
+          tileColor:
+              isSelected ? Colors.orange[50] : null, // Tô màu nền nếu được chọn
           onTap: () {
-            ethereumProvider.switchWallet(i);
-            Navigator.pop(context);
+            setState(() {
+              ethereumProvider.switchWallet(i); // Cập nhật ví hiện tại
+            });
+            Navigator.pop(context); // Đóng modal
           },
         ),
       );
@@ -60,7 +79,9 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Colors.green[100],
           child: Icon(Icons.add, color: Colors.green),
         ),
-        title: Text('Tạo ví mới'),
+        title: Text(
+          AppLocalizations.of(context).translate("add_wallet"),
+        ),
         onTap: () {
           Navigator.pop(context);
         },
@@ -119,7 +140,9 @@ class _HomePageState extends State<HomePage> {
                   },
                   child: CircleAvatar(
                     backgroundColor: Colors.orange[100],
-                    child: Text('MW', style: TextStyle(color: Colors.orange)),
+                    child: Text('B',
+                        style: TextStyle(
+                            color: const Color.fromARGB(255, 153, 0, 255))),
                   ),
                 ),
                 SizedBox(width: 12),
@@ -128,7 +151,7 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Ví của tôi',
+                      AppLocalizations.of(context)!.translate("wallet"),
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                     ),
@@ -168,9 +191,75 @@ class _HomePageState extends State<HomePage> {
                     PopupMenuItem(
                       child: Row(
                         children: [
+                          Icon(Icons.language, color: Colors.green),
+                          SizedBox(width: 8),
+                          Text(AppLocalizations.of(context)
+                              .translate("switch_language"))
+                        ],
+                      ),
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text(
+                                AppLocalizations.of(context)
+                                    .translate("select_language"),
+                              ),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  ListTile(
+                                    title: Text(
+                                      AppLocalizations.of(context)
+                                          .translate("english"),
+                                    ),
+                                    onTap: () {
+                                      MyApp.setLocale(
+                                          context, Locale('en', ''));
+
+                                      setState(() {}); // Cập nhật lại UI
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  ListTile(
+                                    title: Text(
+                                      AppLocalizations.of(context)
+                                          .translate("vietnamese"),
+                                    ),
+                                    onTap: () {
+                                      MyApp.setLocale(
+                                          context, Locale('vi', ''));
+                                      setState(() {}); // Cập nhật lại UI
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                    PopupMenuItem(
+                      child: Row(
+                        children: [
+                          Icon(Icons.settings, color: Colors.blue),
+                          SizedBox(width: 8),
+                          Text(
+                            AppLocalizations.of(context).translate("settings"),
+                          ),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem(
+                      child: Row(
+                        children: [
                           Icon(Icons.logout, color: Colors.red),
                           SizedBox(width: 8),
-                          Text('Đăng xuất'),
+                          Text(
+                            AppLocalizations.of(context).translate("logout"),
+                          ),
                         ],
                       ),
                       onTap: () {
@@ -195,19 +284,19 @@ class _HomePageState extends State<HomePage> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Trang chủ',
+            label: AppLocalizations.of(context).translate("home"),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.grid_view),
-            label: 'Bộ sưu tập',
+            label: AppLocalizations.of(context).translate("collection"),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.history),
-            label: 'Lịch sử',
+            label: AppLocalizations.of(context).translate("history"),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.network_check),
-            label: 'Mạng lưới',
+            label: AppLocalizations.of(context).translate("network"),
           ),
         ],
         onTap: (index) {

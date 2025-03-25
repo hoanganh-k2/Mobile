@@ -57,7 +57,7 @@ app.post('/transactions', async (req, res) => {
 
     res.status(201).send({
       ...transaction,
-      _id: result.insertedId 
+      _id: result.insertedId
     });
   } catch (err) {
     console.error('Error creating transaction:', err);
