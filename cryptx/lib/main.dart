@@ -49,8 +49,20 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Wallet',
       theme: ThemeData(
-        primarySwatch: Colors.orange,
-      ),
+        
+        primarySwatch: Colors.deepPurple,
+        scaffoldBackgroundColor: Colors.deepPurple[50],
+        inputDecorationTheme: InputDecorationTheme(
+      hintStyle: TextStyle(color: Colors.black), // Đặt màu trắng cho hint text // Màu nền cho chế độ sáng
+      ),),
+      darkTheme: ThemeData(
+        primarySwatch: Colors.deepPurple,
+        scaffoldBackgroundColor: Color.fromRGBO(38, 38, 38, 1.0),
+        inputDecorationTheme: InputDecorationTheme(
+      hintStyle: TextStyle(color: Colors.white), // Đặt màu trắng cho hint text// Màu nền cho chế độ tối
+      ),),
+      themeMode: ThemeMode.system, // Tự động thay đổi theo hệ thống
+       // Tự động thay đổi theo hệ thống
       locale: _locale,
       supportedLocales: [
         Locale('en', ''), // English
@@ -62,7 +74,7 @@ class _MyAppState extends State<MyApp> {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      home: HomePage(),
+      home: LoginScreen(),
     );
   }
 }

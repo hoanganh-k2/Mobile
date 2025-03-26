@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:js_interop';
 
 import 'package:wallet/services/blockchain_service.dart';
 import 'package:wallet/services/coingecko_service.dart';
@@ -9,13 +11,30 @@ import 'package:wallet/models/wallet_model.dart';
 import 'package:http/http.dart';
 import 'package:wallet/models/transaction_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+@JS('getPassword')
+@JS('saveToSecureStorage')
+external void saveToSecureStorage(String key, String value, String password);
 
+@JS('getFromSecureStorage')
+external  JSPromise<JSString?> getFromSecureStorage(String key, String password);
+String? get getPassword => "admin123";
 class EthereumProvider extends ChangeNotifier {
   int currentWalletIndex = 0; // Chỉ số ví hiện tại
   final EthereumService _ethereumService;
   final CoinGeckoService _coinGeckoService = CoinGeckoService();
   final TransactionService _transactionService = TransactionService();
+  final _storage = FlutterSecureStorage();
+Future<void> saveData(String key, String value) async {
+    await _storage.write(key: key, value: value);
+  }
 
+  Future<String?> readData(String key) async {
+    return await _storage.read(key: key);
+  }
+  Future<String?> getPassword() async {
+    return await _storage.read(key: "password");
+  }
   List<TransactionModel> _transactions = [];
 
   List<WalletModel> _wallets = [
@@ -53,6 +72,18 @@ class EthereumProvider extends ChangeNotifier {
     _timer?.cancel();
   }
 
+ Future<void> saveVault(List<WalletModel> wls) async {
+    final pw = await getPassword();
+    if (pw == null) {
+      throw Exception("Password is null");
+    }
+    for (WalletModel wl in wls) {
+      print(wl.getAddress);
+    }
+    final wljson = jsonEncode(wls.map((e) => e.toJson()).toList());
+    saveToSecureStorage("vault", wljson, pw);
+  }
+
   Future<void> switchWallet(int index) async {
     currentWalletIndex = index; // Cập nhật ví hiện tại
     _walletModel = _wallets[index];
@@ -62,7 +93,6 @@ class EthereumProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-
 
   void fetchGasFee(String receiver, double ethAmount) async {
     try {

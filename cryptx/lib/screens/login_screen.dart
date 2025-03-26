@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'home_page.dart';
 
-
 class LoginScreen extends StatefulWidget {
   @override
   LoginScreenState createState() => LoginScreenState();
@@ -39,15 +38,20 @@ class LoginScreenState extends State<LoginScreen> {
             children: [
               Text(
                 "Đăng nhập",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               ),
               SizedBox(height: 20),
               TextField(
+                 style: TextStyle(color: Colors.white),
                 controller: _passwordController,
                 obscureText: true,
                 focusNode: _passwordFocusNode,
                 decoration: InputDecoration(
-                  labelText: "Nhập mật khẩu",
+                  hintStyle: TextStyle(color: Colors.white60),
+                  labelText: "Mật khẩu",
                   border: OutlineInputBorder(),
                 ),
               ),

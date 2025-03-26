@@ -16,9 +16,9 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
     final ethereumProvider = Provider.of<EthereumProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Nhận tiền mã hóa"),
+        title: Text("Nhận tiền mã hóa", style: TextStyle(color: Colors.white)),
         centerTitle: true,
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFF9886E5),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -29,7 +29,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
               SizedBox(height: 16),
               Text(
                 "Quét mã QR để nhận tiền",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: Colors.white),
               ),
               SizedBox(height: 16),
               Container(
@@ -48,7 +48,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
               SizedBox(height: 16),
               Text(
                 "Địa chỉ ví của bạn:",
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: 16, color: Colors.white),
               ),
               SizedBox(height: 8),
               SelectableText(
@@ -57,7 +57,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black87),
+                    color: Colors.white),
               ),
               Spacer(),
               ElevatedButton(
@@ -73,7 +73,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(
                       vertical: 20, horizontal: 40), // Tăng kích thước nút
-                  backgroundColor: Colors.orange,
+                  backgroundColor: const Color(0xFF9886E5),
                   shape: RoundedRectangleBorder(
                     borderRadius:
                         BorderRadius.circular(12), // Bo góc mềm mại hơn

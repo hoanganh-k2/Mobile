@@ -7,7 +7,7 @@ class BuyAndSellScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("Mua và bán tiền mã hóa"),
         centerTitle: true,
-        backgroundColor: Colors.orange,
+        backgroundColor: const Color(0xFF9886E5),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -16,7 +16,7 @@ class BuyAndSellScreen extends StatelessWidget {
           children: [
             Text(
               "Loại giao dịch",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,color: Colors.white),
             ),
             SizedBox(height: 8),
             DropdownButtonFormField(
@@ -32,12 +32,13 @@ class BuyAndSellScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 hintText: "Chọn loại giao dịch",
+                hintStyle: TextStyle(color: Colors.white),
               ),
             ),
             SizedBox(height: 16),
             Text(
               "Số lượng",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,color: Colors.white),
             ),
             SizedBox(height: 8),
             TextField(
@@ -56,7 +57,7 @@ class BuyAndSellScreen extends StatelessWidget {
               },
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: Colors.orange,
+                backgroundColor:const Color(0xFF9886E5),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),

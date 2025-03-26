@@ -25,4 +25,6 @@ class WalletModel {
 
   String get getAddress => address ?? 'unknown';
   String get getPrivateKey => privateKey ?? 'unknown';
+
+  void toJson() {}
 }

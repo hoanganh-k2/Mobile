@@ -8,7 +8,7 @@ class LastScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).translate("discover")),
         centerTitle: true,
-        backgroundColor: Colors.orange,
+        backgroundColor: const Color(0xFF9886E5),
         automaticallyImplyLeading: false,
       ),
       body: Padding(
@@ -44,7 +44,7 @@ class LastScreen extends StatelessWidget {
                     child: _buildBox(
                         AppLocalizations.of(context).translate("sites"),
                         Icons.web,
-                        Colors.red,
+                        const Color.fromARGB(255, 224, 88, 78),
                         height: double.infinity),
                   ),
                   SizedBox(width: 16),
@@ -57,7 +57,7 @@ class LastScreen extends StatelessWidget {
                                 AppLocalizations.of(context)
                                     .translate("tokens"),
                                 Icons.monetization_on,
-                                Colors.green)),
+                                const Color.fromARGB(255, 171, 252, 80))),
                         SizedBox(height: 16),
                         Row(
                           children: [
@@ -66,14 +66,14 @@ class LastScreen extends StatelessWidget {
                                     AppLocalizations.of(context)
                                         .translate("collections"),
                                     Icons.category,
-                                    Colors.orange)),
+                                    const Color.fromARGB(255, 190, 55, 179))),
                             SizedBox(width: 16),
                             Expanded(
                                 child: _buildBox(
                                     AppLocalizations.of(context)
                                         .translate("learn"),
                                     Icons.school,
-                                    Colors.blue)),
+                                    const Color.fromARGB(255, 17, 170, 241))),
                           ],
                         ),
                         SizedBox(height: 16),
@@ -81,7 +81,7 @@ class LastScreen extends StatelessWidget {
                             child: _buildBox(
                                 AppLocalizations.of(context).translate("quest"),
                                 Icons.explore,
-                                Colors.purple)),
+                                const Color.fromARGB(255, 252, 226, 82))),
                       ],
                     ),
                   ),

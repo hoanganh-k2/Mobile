@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wallet/providers/ethereum_provider.dart';
+import 'package:wallet/screens/qr_screen.dart';
 import 'package:wallet/utils/format.dart';
 
 class SendScreen extends StatefulWidget {
@@ -46,9 +47,9 @@ class SendScreenState extends State<SendScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Gửi tiền mã hóa"),
+        title: Text("Gửi tiền mã hóa", style: TextStyle(color: Colors.white)),
         centerTitle: true,
-        backgroundColor: Colors.orange,
+        backgroundColor: const Color(0xFF9886E5),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -56,10 +57,10 @@ class SendScreenState extends State<SendScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("Số dư: ${ethereumProvider.walletModel?.getEtherAmount} ETH",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,color: Colors.white)),
             Text(
               "Chọn loại tiền",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,color: Colors.white),
             ),
             SizedBox(height: 8),
             Container(
@@ -71,12 +72,13 @@ class SendScreenState extends State<SendScreen> {
               child: DropdownButton<String>(
                 isExpanded: true,
                 value: selectedToken,
-                icon: Icon(Icons.arrow_drop_down, color: Colors.orange),
+                icon:
+                    Icon(Icons.arrow_drop_down, color: const Color(0xFF9886E5)),
                 underline: SizedBox(),
                 items: tokens.map((String token) {
                   return DropdownMenuItem<String>(
                     value: token,
-                    child: Text(token),
+                    child: Text(token, style: TextStyle(fontSize: 16,color: Colors.white)),
                   );
                 }).toList(),
                 onChanged: (String? newValue) {
@@ -89,23 +91,26 @@ class SendScreenState extends State<SendScreen> {
             SizedBox(height: 16),
             Text(
               "Địa chỉ ví nhận",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,color: Colors.white),
             ),
             SizedBox(height: 8),
             Row(
               children: [
                 Expanded(
                   child: TextField(
+                    style: TextStyle(color: Colors.white),
                     controller: addressController,
                     decoration: InputDecoration(
-                      hintText: "Nhập địa chỉ ví hoặc quét mã QR",
+                      hintStyle: TextStyle(color: Colors.white60),
+                      hintText: "Nhập địa chỉ ví nhận",
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
                     onChanged: (_) {
                       if (isValidInput()) {
-                        ethereumProvider.fetchGasFee(addressController.text.toLowerCase(),
+                        ethereumProvider.fetchGasFee(
+                            addressController.text.toLowerCase(),
                             double.parse(amountController.text));
                         setState(() {
                           transactionFee = ethereumProvider.gasFee;
@@ -120,21 +125,35 @@ class SendScreenState extends State<SendScreen> {
                 ),
                 SizedBox(width: 8),
                 IconButton(
-                  icon: Icon(Icons.qr_code_scanner, color: Colors.orange),
-                  onPressed: () {},
-                ),
-              ],
+                      icon: Icon(Icons.qr_code_scanner, color: const Color(0xFF9886E5)),
+                      onPressed: () async {
+                        final scannedAddress = await Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => QRScannerScreen()),
+                        );
+
+                        // If an address is scanned, populate it into the address field
+                        if (scannedAddress != null) {
+                          setState(() {
+                            addressController.text = scannedAddress;
+                          });
+                        }
+                      },
+                    ),
+                  ],
             ),
             SizedBox(height: 16),
             Text(
               "Số lượng gửi",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,color: Colors.white),
             ),
             SizedBox(height: 8),
             TextField(
               controller: amountController,
+              style: TextStyle(color: Colors.white), // Đổi màu chữ nhập vào
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
+                hintStyle: TextStyle(color: Colors.white60),
                 hintText: "Nhập số lượng tiền mã hóa",
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -157,13 +176,13 @@ class SendScreenState extends State<SendScreen> {
             SizedBox(height: 16),
             Text(
               "Chi phí giao dịch: $transactionFee ETH",
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(color: Colors.white),
             ),
             Divider(),
             SizedBox(height: 16),
             Text(
               "Chi tiết giao dịch",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
             ),
             SizedBox(height: 8),
             Container(
@@ -201,7 +220,8 @@ class SendScreenState extends State<SendScreen> {
             ElevatedButton(
               onPressed: () {
                 if (isValidInput()) {
-                  ethereumProvider.sendTransaction(addressController.text.toLowerCase(),
+                  ethereumProvider.sendTransaction(
+                      addressController.text.toLowerCase(),
                       double.parse(amountController.text));
                   amountController.clear();
                   addressController.clear();
@@ -212,13 +232,13 @@ class SendScreenState extends State<SendScreen> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text("Giao dịch thành công"),
-                      backgroundColor: Colors.green,
+                      backgroundColor: const Color(0xFF9886E5),
                     ),
                   );
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.orange,
+                backgroundColor: const Color(0xFF9886E5),
                 padding: EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),

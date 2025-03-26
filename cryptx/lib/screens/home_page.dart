@@ -45,29 +45,41 @@ class _HomePageState extends State<HomePage> {
       wallets.add(
         ListTile(
           leading: CircleAvatar(
-            backgroundColor: isSelected
-                ? Colors.orange
-                : Colors.orange[100], // Tô màu nếu được chọn
-            child: Icon(Icons.account_balance_wallet,
-                color: isSelected ? Colors.white : Colors.orange),
-          ),
-          title: Text(
-            'Ví ${i + 1}',
-            style: TextStyle(
-              fontWeight: isSelected
-                  ? FontWeight.bold
-                  : FontWeight.normal, // In đậm nếu được chọn
+            backgroundColor: Color(0xFF9886E5), // Màu nền
+            child: Text(
+              'V${i + 1}'[0], // Lấy chữ cái đầu của "Ví 1", "Ví 2",...
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.white, // Chữ màu trắng
+              ),
             ),
           ),
+          title: Text('Wallet ${i + 1}', style: TextStyle(color: Colors.black)),
           subtitle: Text(AddressFormat.formatAddress(
               ethereumProvider.wallets[i].address ?? '0x123...789')),
-          tileColor:
-              isSelected ? Colors.orange[50] : null, // Tô màu nền nếu được chọn
+          trailing: IconButton(
+            icon: Icon(Icons.delete, color: Colors.red),
+            onPressed: () {
+              if (ethereumProvider.wallets.length > 1) {
+                setState(() {
+                  ethereumProvider.wallets.removeAt(i);
+                });
+                ethereumProvider.saveVault(ethereumProvider.wallets);
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Wallet ${i + 1} xóa thành công!')),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Không thể xóa ví')),
+                );
+              }
+            },
+          ),
           onTap: () {
-            setState(() {
-              ethereumProvider.switchWallet(i); // Cập nhật ví hiện tại
-            });
-            Navigator.pop(context); // Đóng modal
+            ethereumProvider.switchWallet(i);
+            Navigator.pop(context);
           },
         ),
       );
@@ -81,6 +93,7 @@ class _HomePageState extends State<HomePage> {
         ),
         title: Text(
           AppLocalizations.of(context).translate("add_wallet"),
+          style: TextStyle(color: Colors.black), // White text
         ),
         onTap: () {
           Navigator.pop(context);
@@ -89,11 +102,12 @@ class _HomePageState extends State<HomePage> {
     );
 
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor:
+          const Color.fromRGBO(48, 48, 48, 1.0), // Darker background
       appBar: AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: 80,
-        backgroundColor: Colors.white,
+        backgroundColor: const Color.fromRGBO(48, 48, 48, 1.0), // Darker AppBar
         elevation: 0,
         flexibleSpace: SafeArea(
           child: Container(
@@ -108,7 +122,8 @@ class _HomePageState extends State<HomePage> {
                         return Container(
                           height: 280,
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: const Color.fromRGBO(
+                                38, 38, 38, 1.0), // Modal background
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(20),
                               topRight: Radius.circular(20),
@@ -117,7 +132,7 @@ class _HomePageState extends State<HomePage> {
                           child: Column(
                             children: [
                               ...wallets,
-                              Divider(),
+                              Divider(color: Colors.grey), // Divider color
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
@@ -139,10 +154,11 @@ class _HomePageState extends State<HomePage> {
                     );
                   },
                   child: CircleAvatar(
-                    backgroundColor: Colors.orange[100],
-                    child: Text('B',
-                        style: TextStyle(
-                            color: const Color.fromARGB(255, 153, 0, 255))),
+                    backgroundColor: const Color(0xFF9886E5),
+                    child: Text(
+                      'V${ethereumProvider.currentWalletIndex + 1}',
+                      style: TextStyle(color: Colors.black), // Text color
+                    ),
                   ),
                 ),
                 SizedBox(width: 12),
@@ -152,24 +168,33 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text(
                       AppLocalizations.of(context)!.translate("wallet"),
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white, // White text
+                      ),
                     ),
                     Text(
                       AddressFormat.formatAddress(address),
-                      style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.white, // Light grey text
+                      ),
                     ),
                   ],
                 ),
-                SizedBox(
-                  width: 10,
-                ),
+                SizedBox(width: 10),
                 DropdownButton<String>(
+                  dropdownColor: const Color.fromRGBO(
+                      38, 38, 38, 1.0), // Dropdown background
                   value: network,
                   items: ['Ethereum', 'Solana', 'Polygon'].map((String choice) {
                     return DropdownMenuItem<String>(
                       value: choice,
-                      child: Text(choice),
+                      child: Text(
+                        choice,
+                        style: TextStyle(color: Colors.white), // White text
+                      ),
                     );
                   }).toList(),
                   onChanged: (String? newValue) {
@@ -182,19 +207,26 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Spacer(),
                 IconButton(
-                  icon: Icon(Icons.qr_code_scanner),
+                  icon: Icon(Icons.qr_code_scanner,
+                      color: const Color(0xFF9886E5)), // White icon
                   onPressed: () {},
                 ),
                 PopupMenuButton(
-                  icon: Icon(Icons.settings),
+                  color:
+                      const Color.fromRGBO(38, 38, 38, 1.0), // Popup background
+                  icon: Icon(Icons.settings,
+                      color: const Color(0xFF9886E5)), // White icon
                   itemBuilder: (context) => [
                     PopupMenuItem(
                       child: Row(
                         children: [
                           Icon(Icons.language, color: Colors.green),
                           SizedBox(width: 8),
-                          Text(AppLocalizations.of(context)
-                              .translate("switch_language"))
+                          Text(
+                            AppLocalizations.of(context)
+                                .translate("switch_language"),
+                            style: TextStyle(color: Colors.white), // White text
+                          ),
                         ],
                       ),
                       onTap: () {
@@ -202,9 +234,13 @@ class _HomePageState extends State<HomePage> {
                           context: context,
                           builder: (context) {
                             return AlertDialog(
+                              backgroundColor: const Color.fromRGBO(
+                                  38, 38, 38, 1.0), // Dialog background
                               title: Text(
                                 AppLocalizations.of(context)
                                     .translate("select_language"),
+                                style: TextStyle(
+                                    color: Colors.white), // White text
                               ),
                               content: Column(
                                 mainAxisSize: MainAxisSize.min,
@@ -213,12 +249,13 @@ class _HomePageState extends State<HomePage> {
                                     title: Text(
                                       AppLocalizations.of(context)
                                           .translate("english"),
+                                      style: TextStyle(
+                                          color: Colors.white), // White text
                                     ),
                                     onTap: () {
                                       MyApp.setLocale(
                                           context, Locale('en', ''));
-
-                                      setState(() {}); // Cập nhật lại UI
+                                      setState(() {}); // Update UI
                                       Navigator.pop(context);
                                     },
                                   ),
@@ -226,11 +263,13 @@ class _HomePageState extends State<HomePage> {
                                     title: Text(
                                       AppLocalizations.of(context)
                                           .translate("vietnamese"),
+                                      style: TextStyle(
+                                          color: Colors.white), // White text
                                     ),
                                     onTap: () {
                                       MyApp.setLocale(
                                           context, Locale('vi', ''));
-                                      setState(() {}); // Cập nhật lại UI
+                                      setState(() {}); // Update UI
                                       Navigator.pop(context);
                                     },
                                   ),
@@ -248,6 +287,7 @@ class _HomePageState extends State<HomePage> {
                           SizedBox(width: 8),
                           Text(
                             AppLocalizations.of(context).translate("settings"),
+                            style: TextStyle(color: Colors.white), // White text
                           ),
                         ],
                       ),
@@ -259,11 +299,18 @@ class _HomePageState extends State<HomePage> {
                           SizedBox(width: 8),
                           Text(
                             AppLocalizations.of(context).translate("logout"),
+                            style: TextStyle(color: Colors.white), // White text
                           ),
                         ],
                       ),
                       onTap: () {
                         Navigator.of(context).pushReplacementNamed('/');
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Đăng xuất thành công"),
+                            backgroundColor: const Color(0xFF9886E5),
+                          ),
+                        );
                       },
                     ),
                   ],
@@ -275,9 +322,11 @@ class _HomePageState extends State<HomePage> {
       ),
       body: _pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor:
+            const Color.fromRGBO(38, 38, 38, 1.0), // Darker background
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.orange,
-        unselectedItemColor: Colors.grey,
+        selectedItemColor: const Color(0xFF9886E5), // Selected item color
+        unselectedItemColor: Colors.grey, // Unselected item color
         selectedFontSize: 14,
         unselectedFontSize: 12,
         currentIndex: _currentIndex,

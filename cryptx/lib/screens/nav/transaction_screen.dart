@@ -5,7 +5,6 @@ import 'package:wallet/utils/format.dart';
 import 'package:wallet/utils/localization.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 class HistoryScreen extends StatefulWidget {
   @override
   State<HistoryScreen> createState() => HistoryScreenState();
@@ -74,9 +73,11 @@ class HistoryScreenState extends State<HistoryScreen> {
         automaticallyImplyLeading: false,
         title: Text(transactionHistoryText,
             style: GoogleFonts.poppins(
-                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.deepPurpleAccent)),
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.white)),
         centerTitle: true,
-        backgroundColor: Colors.orange,
+        backgroundColor: const Color(0xFF9886E5),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -90,15 +91,15 @@ class HistoryScreenState extends State<HistoryScreen> {
             return ListTile(
               leading: CircleAvatar(
                 backgroundColor:
-                    isSend ? Colors.orange[100] : Colors.green[100],
+                    isSend ? Colors.red[100] : Colors.green[100],
                 child: Icon(
                   isSend ? Icons.arrow_upward : Icons.arrow_downward,
-                  color: isSend ? Colors.orange : Colors.green,
+                  color: isSend ? Colors.red : Colors.green,
                 ),
               ),
               title: Text(
                 "${transaction["type"]} ${transaction["amount"]} ETH",
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: FontWeight.bold,color:Colors.white),
               ),
               subtitle: Text(
                 "$addressText: ${transaction["address"]}\n$dateText: ${transaction["date"]}",

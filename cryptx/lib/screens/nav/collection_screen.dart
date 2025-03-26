@@ -27,7 +27,7 @@ class CollectionScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         title: Text(AppLocalizations.of(context)!.translate("NFT Collection")),
         centerTitle: true,
-        backgroundColor: Colors.orange,
+        backgroundColor: const Color(0xFF9886E5),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
